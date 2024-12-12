@@ -1,0 +1,14 @@
+@font-face{
+    font-family: "Casino";
+    src: url('casino.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    background-image: url("https://lh6.googleusercontent.com/proxy/z5m3Gwn-gvkM9fU06qyInTq55mLhbsr_eoJcT5-csWzS-8m6Nx0JclnY71Ij3d6ZVnB_IiPWt47LYtI5HMizDXBgbAp56gE1zpjcA3klX2cZu_uUPpUhWB_PcMtqHGjFUi_10IucyqfV3xYYZA=w958-h910");
+}
+
+.title{
+    font-family: "Casino";
+}
