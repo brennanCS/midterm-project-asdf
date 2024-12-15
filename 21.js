@@ -3,7 +3,8 @@ class Card{
         this.suit = suit;
         this.rank = rank;
         this.value = value;
-        this.image = suit[0].toLowerCase();
+        this.flipped = false;
+        this.image = "/cards/" + suit[0].toLowerCase();
         if (value < 10){
             this.image += "0" + value;
         }
@@ -96,14 +97,64 @@ for (let i = cards.length - 1; i > 0; i--) {
     [cards[i], cards[j]] = [cards[j], cards[i]]; // Swap elements
 }
 
-function dealToPlayer(){
+function dealToPlayer(flipped){
     let i = Math.floor(Math.random() * cards.length);
     playerCards.push(cards[i]);
+    let parent = document.getElementById("player-cards");
+    let card = document.createElement("img");
+    cards[i].flipped = flipped;
+    if (flipped){
+        card.setAttribute("src", "/cards/back.png");
+    }
+    else{
+        card.setAttribute("src", cards[i].image);
+    }
+    card.setAttribute("class", "card");
+    parent.appendChild(card);
+    cards.splice(i, 1);
+    if (calcVal(playerCards) == 21){
+        alert("You win!");
+    }
+    else if (calcVal(playerCards) > 21){
+        alert("You busted :(");
+    }
+}
+
+function dealToDealer(flipped){
+    let i = Math.floor(Math.random() * cards.length);
+    dealerCards.push(cards[i]);
+    let parent = document.getElementById("dealer-cards");
+    let card = document.createElement("img");
+    cards[i].flipped = flipped;
+    if (flipped){
+        card.setAttribute("src", "/cards/back.png");
+    }
+    else{
+        card.setAttribute("src", cards[i].image);
+    }
+    card.setAttribute("class", "card");
+    parent.appendChild(card);
     cards.splice(i, 1);
 }
 
-function dealToDealer(){
-    let i = Math.floor(Math.random() * cards.length);
-    dealerCards.push(cards[i]);
-    cards.splice(i, 1);
+function calcVal(cards){
+    let total = 0;
+    for (let i = 0; i < cards.length; i++){
+        total += cards[i].value;
+    }
+    if (total > 21){
+        for (let i = 0; i < cards.length; i++){
+            if (cards[i].rank == "Ace"){
+                total -= 10;
+            }
+            if (total <= 21){
+                break;
+            }
+        }
+    }
+    return total;
 }
+
+//game logic
+dealToPlayer(false);
+dealToDealer(true);

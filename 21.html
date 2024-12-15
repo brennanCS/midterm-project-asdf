@@ -33,10 +33,9 @@
                 </div>
                 <div class="row border-top bg-black" style="height: 15vh" id="dealer-cards">
                 </div>
-                <div class="row border-top bg-black" style="height: 15vh" id="player-cards">
-                </div>
+                <div class="row border-top bg-black" style="height: 15vh" id="player-cards"></div>
                 <div class="m-3 row d-flex justify-content-evenly bg-transparent" id="game-buttons">
-                    <button class="btn btn-light p-2 col-3" onclick="dealToPlayer(); dealToDealer()">Hit</button>
+                    <button class="btn btn-light p-2 col-3" onclick="try {dealToPlayer();} catch (e) {alert(e)}; try{dealToDealer()} catch (e) {alert(e);}">Hit</button>
                     <button class="btn btn-light p-2 col-3">Stay</button>
                     <button class="btn btn-light p-2 col-3">Bet</button>
                 </div>

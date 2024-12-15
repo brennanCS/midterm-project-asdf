@@ -12,3 +12,11 @@ body{
 .title{
     font-family: "Casino";
 }
+
+.card{
+    height: 100px !important;
+    width: 70px !important;
+    margin-top: 10%;
+    margin-right: 15px;
+    margin-left: 15px;
+}
