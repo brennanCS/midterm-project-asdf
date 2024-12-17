@@ -30,6 +30,7 @@ class Card{
 let cards = [];
 let playerCards = [];
 let dealerCards = [];
+let betAmount;
 
 // Spades
 cards.push(new Card("Spades", "Ace", 11));
@@ -97,7 +98,32 @@ for (let i = cards.length - 1; i > 0; i--) {
     [cards[i], cards[j]] = [cards[j], cards[i]]; // Swap elements
 }
 
+function reshuffle(){
+    //puts all player and dealer cards back into the deck
+    for (let i = 0; i < playerCards.length; i++){
+        cards.push(playerCards[i]);
+    }
+    playerCards = [];
+    for (let i = 0; i < dealerCards.length; i++){
+        cards.push(dealerCards[i]);
+    }
+    dealerCards = [];
+    //removes all cards from the screen
+    document.getElementById('dealer-cards').innerHTML = '';
+    document.getElementById('player-cards').innerHTML = '';
+}
+
+function openAlertWindow(message){
+    document.querySelector('.alert-window').style.display = 'block';
+    document.getElementById('alert-message').innerHTML = message;
+}
+
+function closeAlertWindow(){
+    document.querySelector('.alert-window').style.display = 'none';
+}
+
 function dealToPlayer(flipped){
+    closeAlertWindow();
     let i = Math.floor(Math.random() * cards.length);
     playerCards.push(cards[i]);
     let parent = document.getElementById("player-cards");
@@ -113,11 +139,24 @@ function dealToPlayer(flipped){
     parent.appendChild(card);
     cards.splice(i, 1);
     if (calcVal(playerCards) == 21){
-        alert("You win!");
+        openAlertWindow("You win!");
+        setTimeout(reshuffle, 2000);
+        document.getElementById('hit-button').disabled = true;
+        document.getElementById('stay-button').disabled = true
+        document.getElementById('bet-button').disabled = false;
+        let chips = parseInt(getCookie('chips'));
+        setCookie('chips', chips + (betAmount * 1.5), 100);
+        refreshChipValue();
     }
     else if (calcVal(playerCards) > 21){
-        alert("You busted :(");
+        openAlertWindow('You busted');
+        setTimeout(reshuffle, 2000);
+        document.getElementById('hit-button').disabled = true;
+        document.getElementById('stay-button').disabled = true
+        document.getElementById('bet-button').disabled = false;
+        setCookie('chips', chips - betAmount, 100);
     }
+    document.getElementById("player-points").innerHTML = "User Points: " + calcVal(playerCards)
 }
 
 function dealToDealer(flipped){
@@ -155,6 +194,51 @@ function calcVal(cards){
     return total;
 }
 
-//game logic
-dealToPlayer(false);
-dealToDealer(true);
+function evaluateRound(){
+    let playerScore = calcVal(playerCards);
+    let dealerScore = calcVal(dealerCards);
+    if (dealerScore < playerScore){
+        dealToDealer(false);
+        evaluateRound();
+    }
+    else if (dealerScore > 21){
+        openAlertWindow("You win!");
+        setTimeout(reshuffle, 2000);
+        document.getElementById('hit-button').disabled = true;
+        document.getElementById('stay-button').disabled = true
+        document.getElementById('bet-button').disabled = false;
+        let chips = parseInt(getCookie('chips'));
+        setCookie('chips', chips + (betAmount * 1.5), 100);
+        refreshChipValue();
+    }
+    else if (dealerScore == playerScore){
+        openAlertWindow('draw')
+        setTimeout(reshuffle, 2000);
+        document.getElementById('hit-button').disabled = true;
+        document.getElementById('stay-button').disabled = true
+        document.getElementById('bet-button').disabled = false;
+    }
+    else{
+        openAlertWindow("You lose");
+        setTimeout(reshuffle, 2000);
+        document.getElementById('hit-button').disabled = true;
+        document.getElementById('stay-button').disabled = true
+        document.getElementById('bet-button').disabled = false;
+        let chips = parseInt(getCookie('chips'));
+        setCookie('chips', chips - betAmount, 100);
+        refreshChipValue();
+    }
+    document.querySelector("#dealer-cards>img").setAttribute("src", dealerCards[0].image);
+}
+
+function bet(amount){
+    betAmount = amount;
+    let chips = parseInt(getCookie('chips'));
+    setCookie('chips', chips - betAmount, 100);
+    refreshChipValue();
+    setTimeout(dealToPlayer, 2000, false);
+    setTimeout(dealToDealer, 1000, true);
+    document.getElementById('hit-button').disabled = false;
+    document.getElementById('stay-button').disabled = false
+    document.getElementById('bet-button').disabled = true;
+}
