@@ -1,5 +1,5 @@
 //initiates chip amount
-if (document.cookie == ''){
+if (getCookie('chips') == ''){
     setCookie('chips', 20, 100);
 }
 refreshChipValue();

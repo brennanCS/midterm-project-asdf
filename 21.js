@@ -234,7 +234,6 @@ function evaluateRound(){
 function bet(amount){
     betAmount = amount;
     let chips = parseInt(getCookie('chips'));
-    setCookie('chips', chips - betAmount, 100);
     refreshChipValue();
     setTimeout(dealToPlayer, 2000, false);
     setTimeout(dealToDealer, 1000, true);

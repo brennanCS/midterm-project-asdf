@@ -1,0 +1,15 @@
+canvas{
+    width: 25% !important;
+    height: 300px !important;
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    background-color: gray;
+    margin: 0;
+    padding: 0;
+}
+
+#machine{
+    background-color: black;
+}
