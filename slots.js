@@ -1,16 +1,19 @@
 class Square{
-    constructor(y, canvas, color){
+    constructor(y, canvas, color, image){
         this.x = 0;
         this.y = y;
         this.width = canvas.width;
         this.height = this.width;
         this.color = color;
         this.active = true;
+        this.imageURL = image;
+        this.image = new Image(this.width, this.height);
+        this.image.src = image;
     }
 
     draw(c){
         c.fillStyle = this.color;
-        c.fillRect(this.x, this.y, this.width, this.height);
+        c.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 
     update(){
@@ -32,27 +35,27 @@ let c2 = slot2.getContext("2d");
 let c3 = slot3.getContext("2d");
 
 slotSquares1 = [
-    new Square(0, slot1, "blue"),
-    new Square(slot1.width, slot1, "red"),
-    new Square(-slot1.width, slot1, "yellow"),
-    new Square(-slot1.width * 2, slot1, "orange"),
-    new Square(-slot1.width * 3, slot1, "purple")
+    new Square(0, slot1, "blue", "slots/3rd-Angel.png"),
+    new Square(slot1.width, slot1, "red", "slots/4th-Angel.png"),
+    new Square(-slot1.width, slot1, "yellow", "slots/6th-Angel.png"),
+    new Square(-slot1.width * 2, slot1, "orange", "slots/7th-Angel.png"),
+    new Square(-slot1.width * 3, slot1, "purple", "slots/8th-Angel.png")
 ]
 
 slotSquares2 = [
-    new Square(0, slot2, "blue"),
-    new Square(slot2.width, slot2, "red"),
-    new Square(-slot2.width, slot2, "yellow"),
-    new Square(-slot2.width * 2, slot2, "orange"),
-    new Square(-slot2.width * 3, slot2, "purple")
+    new Square(0, slot2, "blue", "slots/3rd-Angel.png"),
+    new Square(slot2.width, slot2, "red", "slots/4th-Angel.png"),
+    new Square(-slot2.width, slot2, "yellow", "slots/6th-Angel.png"),
+    new Square(-slot2.width * 2, slot2, "orange", "slots/7th-Angel.png"),
+    new Square(-slot2.width * 3, slot2, "purple", "slots/8th-Angel.png")
 ];
 
 slotSquares3 = [
-    new Square(0, slot3, "blue"),
-    new Square(slot3.width, slot3, "red"),
-    new Square(-slot3.width, slot3, "yellow"),
-    new Square(-slot3.width * 2, slot3, "orange"),
-    new Square(-slot3.width * 3, slot3, "purple")
+    new Square(0, slot3, "blue", "slots/3rd-Angel.png"),
+    new Square(slot3.width, slot3, "red", "slots/4th-Angel.png"),
+    new Square(-slot3.width, slot3, "yellow", "slots/6th-Angel.png"),
+    new Square(-slot3.width * 2, slot3, "orange", "slots/7th-Angel.png"),
+    new Square(-slot3.width * 3, slot3, "purple", "slots/8th-Angel.png")
 ];
 
 //randomizes the squares y value;
@@ -79,22 +82,84 @@ function animate(){
 }
 
 function stopSlots(){
+    let chips = 
+    let timeStop1 = Math.floor(Math.random() * 1500);
+    let timeStop2 = timeStop1 + Math.floor(Math.random() * 1500);
+    let timeStop3 = timeStop2 + Math.floor(Math.random() * 1500);
     setTimeout(() => {
         for (let i = 0; i < slotSquares1.length; i++){
             slotSquares1[i].active = false;
         }
         
-    }, 1000);
+    }, timeStop1);
     setTimeout(() => {
         for (let i = 0; i < slotSquares2.length; i++){
             slotSquares2[i].active = false;
         }
-    }, 2000);
+    }, timeStop2);
     setTimeout(() => {
         for (let i = 0; i < slotSquares3.length; i++){
             slotSquares3[i].active = false;
         }
-    }, 3000)
+    }, timeStop3);
+
+    //determines which square is active for each slot
+    setTimeout(() => {
+        var square1;
+        var square2;
+        var square3;
+
+        for (let i = 0; i < slotSquares1.length; i++){
+            if (slotSquares1[i].y >= -(slotSquares1[i].height / 2) && slotSquares1[i].y <= slotSquares1[i].height / 2){
+                square1 = slotSquares1[i];
+                console.log(square1);
+                break;
+            }
+        }
+        for (let i = 0; i < slotSquares2.length; i++){
+            if (slotSquares2[i].y >= -(slotSquares2[i].height / 2) && slotSquares2[i].y <= slotSquares2[i].height / 2){
+                square2 = slotSquares2[i];
+                console.log('test');
+                break;
+            }
+        }
+        for (let i = 0; i < slotSquares3.length; i++){
+            if (slotSquares3[i].y >= -(slotSquares3[i].height / 2) && slotSquares3[i].y <= slotSquares3[i].height / 2){
+                square3 = slotSquares3[i];
+                console.log('test');
+                break;
+            }
+        }
+
+        square1.y = 0;
+        square2.y = 0;
+        square3.y = 0;
+
+        if (square1.imageURL == square2.imageURL && square2.imageURL == square3.imageURL){
+            openAlertWindow("You won 3x your bet");
+            let chips = parseInt(getCookie('chips'));
+            setCookie('chips', chips + 3, 100);
+        }
+        else if (square1.imageURL == square2.imageURL || square2.imageURL == square3.imageURL || square1.imageURL == square2.imageURL){
+            openAlertWindow("You won 2x your bet");
+            let chips = parseInt(getCookie('chips'));
+            setCookie('chips', chips + 2, 100);
+        }
+        else{
+            openAlertWindow("No matches :(");
+        }
+
+    }, timeStop3);
+}
+
+function openAlertWindow(message){
+    document.querySelector('.alert-window').style.display = 'block';
+    document.getElementById('alert-message').innerHTML = message;
+}
+
+function closeAlertWindow(){
+    document.querySelector('.alert-window').style.display = 'none';
+    location.reload();
 }
 
 animate();

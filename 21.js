@@ -154,7 +154,6 @@ function dealToPlayer(flipped){
         document.getElementById('hit-button').disabled = true;
         document.getElementById('stay-button').disabled = true
         document.getElementById('bet-button').disabled = false;
-        setCookie('chips', chips - betAmount, 100);
     }
     document.getElementById("player-points").innerHTML = "User Points: " + calcVal(playerCards)
 }
@@ -217,6 +216,7 @@ function evaluateRound(){
         document.getElementById('hit-button').disabled = true;
         document.getElementById('stay-button').disabled = true
         document.getElementById('bet-button').disabled = false;
+        setCookie('chips', chips + betAmount, 100);
     }
     else{
         openAlertWindow("You lose");
@@ -224,8 +224,6 @@ function evaluateRound(){
         document.getElementById('hit-button').disabled = true;
         document.getElementById('stay-button').disabled = true
         document.getElementById('bet-button').disabled = false;
-        let chips = parseInt(getCookie('chips'));
-        setCookie('chips', chips - betAmount, 100);
         refreshChipValue();
     }
     document.querySelector("#dealer-cards>img").setAttribute("src", dealerCards[0].image);
@@ -234,6 +232,7 @@ function evaluateRound(){
 function bet(amount){
     betAmount = amount;
     let chips = parseInt(getCookie('chips'));
+    setCookie('chips', chips - betAmount, 100);
     refreshChipValue();
     setTimeout(dealToPlayer, 2000, false);
     setTimeout(dealToDealer, 1000, true);

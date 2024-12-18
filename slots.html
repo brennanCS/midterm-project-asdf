@@ -41,6 +41,10 @@
             </div>
         </div>
     </div>
+    <div class="alert-window">
+        <button onclick="closeAlertWindow()">X</button>
+        <h3 id="alert-message"></h3>
+    </div>
     <script>
         let arrowWidth = document.querySelector(".navbar-brand").offsetWidth;
         document.querySelector("title").style.transform = "translateX(-" + (arrowWidth / 2) + "px)";

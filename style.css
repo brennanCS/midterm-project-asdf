@@ -24,7 +24,7 @@ body{
 
 .alert-window{
     position: fixed;
-    top: 100px;
+    top: 200px;
     right: 100px;
     height: 300px;
     width: 500px;
@@ -34,6 +34,7 @@ body{
     border-width: 2px;
     border-radius: 5px;
     display: none;
+    z-index: 10;
 }
 
 .alert-window>button{
