@@ -56,26 +56,6 @@ slotSquares3 = [
 ];
 
 //randomizes the squares y value;
-for (let i = 0; i < slotSquares1.length; i++) {
-    let j = Math.floor(Math.random() * slotSquares1.length);
-    let temp = slotSquares1[i].y;
-    slotSquares1[i].y = slotSquares1[j].y;
-    slotSquares1[j].y = temp;
-}
-
-for (let i = 0; i < slotSquares2.length; i++) {
-    let j = Math.floor(Math.random() * slotSquares2.length);
-    let temp = slotSquares2[i].y;
-    slotSquares2[i].y = slotSquares2[j].y;
-    slotSquares2[j].y = temp;
-}
-
-for (let i = 0; i < slotSquares3.length; i++) {
-    let j = Math.floor(Math.random() * slotSquares3.length);
-    let temp = slotSquares3[i].y;
-    slotSquares3[i].y = slotSquares3[j].y;
-    slotSquares3[j].y = temp;
-}
 
 function animate(){
     requestAnimationFrame(animate);
